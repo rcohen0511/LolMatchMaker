@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import ContentWrapper from '../Layout/ContentWrapper';
-import { OverlayTrigger, Tooltip, Popover, Table, FormControl, Button, FormGroup, Panel, Grid, Row, Col, Dropdown, MenuItem } from 'react-bootstrap';
+import { Table, FormControl, Button, FormGroup, Panel, Grid, Row, Col, Dropdown, MenuItem } from 'react-bootstrap';
 // import { Grid, Row, Col, Panel, Button, Table } from 'react-bootstrap';
 import DashboardRun from './DashboardV4.run';
-import { testData } from './Data';
 
 const masteryList = {
     "6143": {
@@ -582,68 +581,12 @@ const match_data = {
 
 
 
-class MasteryItem extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEnabled: false,
-      rank: 0,
-      name: ""
-    }
-  }
-
-  componentDidMount() {
-    // logic for mapping here
-    const masteriesMap = {
-      "6111": {'masteryId': 6111, 'rank': 3, 'enabled': true},
-      "6114": {'masteryId': 6111, 'rank': 4, 'enabled': false}
-    }
-    const rank = masteriesMap[this.props.masteryId]['rank'];
-
-    this.setState({
-      rank: rank,
-      isEnabled: masteriesMap[this.props.masteryId]['enabled'],
-      name: masteryList[this.props.masteryId]['name']
-    })
-  }
-
-  render() {
-    var enableStyle = {};
-    if( !this.state.isEnabled ) {
-      enableStyle = {
-        filter: "grayscale(100%)"
-      }
-    }
-
-    return (
-      <div className="col-sm-4">
-        {/* 6111 */}
-        <OverlayTrigger trigger="hover" placement="right" overlay={
-          <Popover id="pp4" title="Mastery Details">
-            <div><strong>Name: </strong> {this.state.name}</div>
-            <div><strong>Description: </strong> {this.props.masteryId}</div>
-          </Popover> }>
-            {/* <Button bsStyle="default">Holy guacamole!</Button> */}
-            <div>
-              <img style={enableStyle} src={"../leagueFiles/7.16.1/img/mastery/" + this.props.masteryId + ".png"}/>
-              <div>Rank: {this.state.rank}</div>
-            </div>
-
-        </OverlayTrigger>
-      </div>
-    )
-  }
-}
-
 class DashboardV4 extends React.Component {
 
     componentDidMount() {
         // DashboardRun(
         //     ReactDom.findDOMNode(this.refs.chartSpline)
         // );
-        //  console.log(testData);
-        // var masteryList = axios.get('http://127.0.0.1:5000/api/masteries')
     }
 
     componentWillUnmount() {
@@ -738,24 +681,6 @@ class DashboardV4 extends React.Component {
 
         <Col lg={ 12 }>
             <Panel header="Mastery Details">
-
-
-              <Col sm={4}>
-                <h4>Ferocity</h4>
-                <div className="row">
-                  {/* change mastery data consumption to map for passing enabled / ranking */}
-                  <MasteryItem masteryId="6111"/>
-                  <MasteryItem masteryId="6114"/>
-                </div>
-                <div className="row">
-                  <MasteryItem masteryId="6121" />
-                  <MasteryItem masteryId="6122" />
-                  <MasteryItem masteryId="6123" />
-                </div>
-              </Col>
-              <Col sm={4}>Cunning</Col>
-              <Col sm={4}>Resolve</Col>
-
                 <Table responsive striped bordered hover>
                     <thead>
                         <tr>
