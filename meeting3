@@ -1,0 +1,44 @@
+
+
+
+Meeting 3 
+
+# resume review / approach interviewing
+# project idea
+- dashboard (integrating backend services)
+  - search (summoner vs summoner)
+  - match page ()
+  - play around with python api to create data model
+
+(next week)
+- review
+- search
+- building out and connecting backend service to the frontend service
+
+
+
+
+***
+
+(later)
+- build on of template
+- review endorse.gg app (large project)
+
+(future projects)
+- (programming) frontend reactjs
+- (programming) python backend (chat pollers, rest services)
+- (dev ops) setting elastic search instances (3x) / vpn - digital ocean (droplets)
+
+(hw)
+#D install visual vm (ubuntu)
+#D how children works - http://mxstbr.blog/2017/02/react-children-deepdive/
+# tutorialpoint
+# install git
+# angle template (get from eugene)
+- (part 1) run angle templates / create new dashboard v4
+- (part 2) work server backend / connecting / using riot API
+
+(app ideas)
+- blog
+- social media (fb)
+- endorse.gg (search, campaign dashboard)
