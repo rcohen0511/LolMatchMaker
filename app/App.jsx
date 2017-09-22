@@ -11,7 +11,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, hashHistory, useRouterHistory, IndexRoute } from 'react-router';
+import { Router, Route, Link, hashHistory, useRouterHistory, browserHistory, IndexRoute } from 'react-router';
 import { createHistory } from 'history';
 
 import initTranslation from './components/Common/localize';
@@ -25,6 +25,7 @@ import DashboardV1 from './components/Dashboard/DashboardV1';
 import DashboardV2 from './components/Dashboard/DashboardV2';
 import DashboardV3 from './components/Dashboard/DashboardV3';
 import DashboardV4 from './components/Dashboard/DashboardV4';
+import FirstPage from './components/Dashboard/FirstPage';
 
 
 import Widgets from './components/Widgets/Widgets';
@@ -137,7 +138,7 @@ const appHistory = useRouterHistory(createHistory)({
 })
 
 ReactDOM.render(
-    <Router history={appHistory}>
+    <Router history={browserHistory}>
         <Route path="/" component={Base}>
 
             {/* Default route*/}
@@ -148,6 +149,7 @@ ReactDOM.render(
             <Route path="dashboardv2" component={DashboardV2}/>
             <Route path="dashboardv3" component={DashboardV3}/>
             <Route path="dashboardv4" component={DashboardV4}/>
+            <Route path="firstpage" component={FirstPage}/>
 
 
             {/*Widgets*/}
@@ -243,8 +245,17 @@ ReactDOM.render(
             <Route path="dashboardv3h" component={DashboardV2}/>
             <Route path="dashboardv2h" component={DashboardV3}/>
             <Route path="dashboardv4h" component={DashboardV4}/>
+            <Route path="firstpage" component={FirstPage}/>
             <Route path="widgetsh" component={Widgets}/>
         </Route>
+
+        <Route path="/lol" component={BasePage}>
+            <Route path="matchup" component={FirstPage}/>
+            <Route path="details" component={DashboardV4}/>
+            <Route path="details/:champPlayed/:champPlayedOpp" component={DashboardV4}/>
+        </Route>
+
+
 
         {/*Pages*/}
         <Route path="/" component={BasePage}>

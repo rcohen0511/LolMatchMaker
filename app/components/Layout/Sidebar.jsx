@@ -12,7 +12,7 @@ class Sidebar extends React.Component {
         this.state = {
             userBlockCollapse: false,
             collapse: {
-                dashboard: this.routeActive(['dashboard', 'dashboardv2', 'dashboardv3', 'dashboardv4']),
+                dashboard: this.routeActive(['dashboard', 'dashboardv2', 'dashboardv3', 'dashboardv4','firstpage']),
                 widget: this.routeActive('widgets'),
                 elements: this.routeActive(['buttons', 'notifications', 'sweetalert', 'tour', 'carousel', 'spinners', 'animations', 'dropdown', 'nestable', 'sortable', 'panels', 'portlet', 'grid', 'grid-masonry', 'typography', 'icons-font', 'icons-weather', 'colors']),
                 forms: this.routeActive(['form-standard', 'form-extended', 'form-validation', 'form-wizard', 'form-upload', 'form-xeditable', 'form-cropper']),
@@ -104,7 +104,7 @@ class Sidebar extends React.Component {
                             <li className="nav-heading ">
                                 <span data-localize="sidebar.heading.HEADER">Main Navigation</span>
                             </li>
-                            <li className={ this.routeActive(['dashboard', 'dashboardv2', 'dashboardv3','dashboardv4']) ? 'active' : '' }>
+                            <li className={ this.routeActive(['dashboard', 'dashboardv2', 'dashboardv3','dashboardv4','firstpage']) ? 'active' : '' }>
                                 <div className="nav-item" onClick={ this.toggleItemCollapse.bind(this, 'dashboard') }>
                                     <div className="pull-right label label-info">4</div>
                                     <em className="icon-speedometer"></em>
@@ -131,6 +131,11 @@ class Sidebar extends React.Component {
                                         <li className={ this.routeActive('dashboardv4') ? 'active' : '' }>
                                             <Link to="dashboardv4" title="Dashboard v4">
                                             <span>Dashboard v4</span>
+                                            </Link>
+                                        </li>
+                                        <li className={ this.routeActive('FirstPage') ? 'active' : '' }>
+                                            <Link to="firstpage" title="FirstPage">
+                                            <span>FirstPage</span>
                                             </Link>
                                         </li>
                                     </ul>
