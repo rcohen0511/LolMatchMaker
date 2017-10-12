@@ -6,10 +6,12 @@ import { testData } from './Data';
 import { masteryList } from './Data';
 import { itemList } from './Data';
 import { champList } from './Data';
+import { championFull } from './Data';
 import { match_data } from './Data';
 import { fullMatchData } from './Data';
 import { sqlDataVeigar } from './Data';
 import { sqlDataSyndra } from './Data';
+import { buildOrders } from './Data';
 import axios from 'axios';
 import FirstPage from './FirstPage';
 
@@ -33,7 +35,7 @@ class Item extends React.Component {
 
   render() {
     return (
-      <div className="col-sm-1">
+      <div className="col-sm-3">
         <OverlayTrigger trigger="hover" placement="right" overlay={
           <Popover id="pp4" title="Item Details">
             <div><strong>Name: </strong> {this.state.name}</div>
@@ -41,16 +43,77 @@ class Item extends React.Component {
             <div><strong>Plain Text: </strong> {this.state.plaintext}</div>
           </Popover> }>
             <div>
-              <img width="135%" height="135%" src={"../leagueFiles/7.16.1/img/item/" + this.props.itemId + ".png"}/>
+              <img width="50px" height="50px" src={"../leagueFiles/7.16.1/img/item/" + this.props.itemId + ".png"}/>
               <h6>{this.state.name}</h6>
             </div>
-
         </OverlayTrigger>
       </div>
     )
   }
 }
 
+class SkillItem extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltip: "",
+      name: "",
+      description: "",
+      id: "",
+      championPlayed: ""
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      name: championFull["data"][this.props.champPlayed]['spells'][this.props.spellId]['name'],
+      description: championFull["data"][this.props.champPlayed]['spells'][this.props.spellId]['description'],
+      tooltip: championFull["data"][this.props.champPlayed]['spells'][this.props.spellId]['tooltip'],
+      id: championFull["data"][this.props.champPlayed]['spells'][this.props.spellId]['id']
+    })
+  }
+
+  render() {
+    return (
+      <td>
+        <OverlayTrigger trigger="hover" placement="right" overlay={
+          <Popover id="pp4" title="Item Details">
+            <div><strong>Name: </strong> {this.state.name}</div>
+            <div><strong>Description: </strong> {this.state.description}</div>
+            <div><strong>Tooltip: </strong> {this.state.tooltip}</div>
+          </Popover> }>
+            <div>
+              <img width="30%" height="30%" src={"../leagueFiles/7.16.1/img/spell/" + this.state.id + ".png"}/>
+            </div>
+
+        </OverlayTrigger>
+      </td>
+    )
+  }
+}
+
+class SkillTrue extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      true: ""
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      true: this.props.true
+  })
+  }
+
+  render() {
+    return (
+      <td>
+        {this.state.true}
+      </td>
+    )
+  }
+}
 
 class MasteryItem extends React.Component {
   constructor(props) {
@@ -125,6 +188,31 @@ class MasteryItem extends React.Component {
   }
 }
 
+class RuneItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      runeId: "",
+      rank: ""
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      runeId: this.props.runeId,
+      rank: this.props.rank
+      })
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.runeId}
+      </div>
+    )
+  }
+}
+
 class DashboardV4 extends React.Component {
     constructor(props) {
       super(props);
@@ -134,6 +222,8 @@ class DashboardV4 extends React.Component {
         "champPlayedData": {
           "items": {},
           "masteries": {},
+          "runes": {},
+          "skills": {},
         },
         "champPlayedOppData": {}
       }
@@ -217,32 +307,36 @@ class DashboardV4 extends React.Component {
           </Col>
         );
     }
+
     createRuneSection(){
-        var runesUsed = JSON.parse(this.state.champPlayedData.runes)
-        runesUsed.map((rune)=>{
-          return(
-            console.log(String(rune['runeId'])+" is of rank "+String(rune['rank']))
+      var runesUsed = this.state.champPlayedData.runes;
+      var runeKey = Object.keys(runesUsed)
 
-          )
-        })
+      console.log(runesUsed)
 
-        // var runesKey = Object.keys(runesUsed)
-        // console.log("rune section")
-        // console.log(runesUsed)
-        return(
-          <div>test</div>
-              // {/* <Col lg={ 12 }>
-              //     <Panel header="Runes Used">
-              //  {runesKey.map((key)=>{
-              //   return(
-              //     console.log(key)
-              //
-              //   //  <Item itemId={itemsBuilt[key]}/>
-              //       )
-              // })}
-              //   </Panel>
-              // </Col> */}
-        )
+      // {runeKey.map((key)=>{
+      //
+      //   return(
+      //   console.log(key +"=" + runesUsed[key])
+      //   )
+      // })}
+
+      return(
+        <Col lg={ 12 }>
+            <Panel header="Runes Used">
+
+                {runeKey.map((key)=>{
+
+                  return(
+
+                  <RuneItem runeId={key} rank={runesUsed[key]}/>
+
+                  )
+                })}
+
+            </Panel>
+          </Col>
+      )
     }
 
     createItemSection(){
@@ -251,19 +345,26 @@ class DashboardV4 extends React.Component {
       var itemsBuilt = this.state.champPlayedData.items;
       var itemKey = Object.keys(itemsBuilt)
 
-      // console.log(itemsBuilt.keys.sort())
+      // {itemKey.map((key)=>{
+      //
+      //   return(
+      //   console.log(key +"=" + itemsBuilt[key])
+      //   )
+      // })}
+      // console.log(itemsBuilt.keys())
       return(
         <Col lg={ 12 }>
             <Panel header="Item Build">
-
+              <div className="row">
                 {itemKey.map((key)=>{
 
                   return(
 
                   <Item key={key} itemId={itemsBuilt[key]}/>
+
                   )
                 })}
-
+              </div>
             </Panel>
           </Col>
       )
@@ -376,6 +477,135 @@ class DashboardV4 extends React.Component {
       )
     }
 
+    createSkillQ(){
+      var skillList = this.state.champPlayedData.skills
+      var skills = Object.keys(skillList)
+
+      return(
+        <tr>
+          <SkillItem spellId="0" champPlayed={this.state.champPlayed} />
+
+          {skills.map((key)=>{
+            if (skillList[key]==1){
+              return(<SkillTrue true="X" />)
+            } else {
+              return(<SkillTrue true="" />)
+            }
+          })}
+
+        </tr>
+      )
+    }
+
+    createSkillW(){
+      var skillList = this.state.champPlayedData.skills
+      var skills = Object.keys(skillList)
+
+      return(
+        <tr>
+          <SkillItem spellId="1" champPlayed={this.state.champPlayed} />
+
+          {skills.map((key)=>{
+            if (skillList[key]==2){
+              return(<SkillTrue true="X" />)
+            } else {
+              return(<SkillTrue true="" />)
+            }
+          })}
+
+        </tr>
+      )
+    }
+
+    createSkillE(){
+      var skillList = this.state.champPlayedData.skills
+      var skills = Object.keys(skillList)
+
+      return(
+        <tr>
+          <SkillItem spellId="2" champPlayed={this.state.champPlayed} />
+
+          {skills.map((key)=>{
+            if (skillList[key]==3){
+              return(<SkillTrue true="X" />)
+            } else {
+              return(<SkillTrue true="" />)
+            }
+          })}
+
+        </tr>
+      )
+    }
+
+    createSkillR(){
+      var skillList = this.state.champPlayedData.skills
+      var skills = Object.keys(skillList)
+
+      return(
+        <tr>
+          <SkillItem spellId="3" champPlayed={this.state.champPlayed} />
+
+          {skills.map((key)=>{
+            if (skillList[key]==4){
+              return(<SkillTrue true="X" />)
+            } else {
+              return(<SkillTrue true="" />)
+            }
+          })}
+
+        </tr>
+      )
+    }
+
+    createSkillSection(){
+      // console.log(this.state.champPlayed)
+      // console.log(championFull["data"][this.state.championPlayed]['spells'])
+
+
+
+      return(
+
+        <Panel header="Spell Order">
+            { /* START table-responsive */ }
+            <Table responsive striped bordered hover>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                        <th>17</th>
+                        <th>18</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.createSkillQ()}
+                    {this.createSkillW()}
+                    {this.createSkillE()}
+                    {this.createSkillR()}
+
+                </tbody>
+            </Table>
+            { /* END table-responsive */ }
+        </Panel>
+      )
+    }
+
+
     render() {
       console.log("in render")
         return (
@@ -386,8 +616,13 @@ class DashboardV4 extends React.Component {
               <div>{match_data['match_id']}</div>
               <div>{match_data['game_mode']}</div>
               <br/>
-              {/* {this.createRuneSection()} */}
-              {this.createItemSection()}
+
+
+              {this.createRuneSection()}
+              {this.createSkillSection()}
+              {/* {this.createItemSection()} */}
+              <ItemSection />
+
               {this.createMasterySection()}
 
               {/* {this.createMatchDetailSection()} */}
@@ -398,6 +633,63 @@ class DashboardV4 extends React.Component {
 
 }
 
+class ItemGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      "items": this.props.groupItems
+    }
+  }
+
+  render() {
+    return (<div>
+      {this.state.items.map(i => {
+        return (<div style={{ display: "inline", padding: "15px", height: "100px", width: "100px"}}>
+          {i.name}
+        </div>)
+      })}
+    </div>)
+  }
+}
+
+class ItemSection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      "items": []
+    }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:5000/api/items')
+       .then((res) => {
+            this.setState({
+              items: res.data.events_of_events
+            })
+        }).catch((err)=> {
+
+        })
+  }
+
+  render() {
+    console.log(this.state.items);
+    return (<div>
+
+      {/* {this.state.items.map((i) => {
+        return (<div><pre>{JSON.stringify(i)}</pre><div>></div></div>)
+      })} */}
+
+      {this.state.items.map((i) => {
+        return (
+          <div>
+            <ItemGroup groupItems={i}/>
+            <div>></div>
+          </div>)
+      })}
+
+    </div>)
+  }
+}
 
 
 export default DashboardV4;

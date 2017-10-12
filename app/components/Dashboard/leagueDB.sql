@@ -38,4 +38,4 @@ true,
 'MID'
 )
 
-select * from matches where champPlayed like '%Veigar%' and opponentChampion like '%Syndra%'
+select * from matches where champPlayed like '%Veigar%'
